@@ -25,11 +25,22 @@
   <!-- Gallery section -->
   <section>
     <h2>Projects</h2>
-    <div class="gallery">
-      <!-- Note: space in file name replaced with %20 -->
-      <img src="https://raw.githubusercontent.com/rowansepoxy/rowansepoxy.github.io/main/IMG_2096%202.JPG" alt="Epoxy table 1">
-      <img src="https://raw.githubusercontent.com/rowansepoxy/rowansepoxy.github.io/main/IMG_2150.JPG" alt="Epoxy table 2">
-    </div>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+      fetch('images.json')
+        .then(response => response.json())
+        .then(images => {
+          const gallery = document.getElementById('gallery');
+          images.forEach(img => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `https://raw.githubusercontent.com/rowansepoxy/rowansepoxy.github.io/main/${encodeURIComponent(img)}`;
+            imgElement.alt = "Epoxy table";
+            gallery.appendChild(imgElement);
+          });
+        })
+        .catch(err => console.error("Error loading images:", err));
+    </script>
   </section>
 
   <!-- About section -->
