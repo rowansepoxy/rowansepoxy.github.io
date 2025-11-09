@@ -28,15 +28,21 @@
     <div class="gallery" id="gallery"></div>
 
     <script>
-      fetch('images.json')
-        .then(response => response.json())
-        .then(images => {
-          const gallery = document.getElementById('gallery');
-          images.forEach(img => {
-            const imgElement = document.createElement('img');
-            imgElement.src = `https://raw.githubusercontent.com/rowansepoxy/rowansepoxy.github.io/main/${encodeURIComponent(img)}`;
-            imgElement.alt = "Epoxy table";
-            gallery.appendChild(imgElement);
+      const repoOwner = 'rowansepoxy';
+      const repoName = 'rowansepoxy.github.io';
+      const folderPath = ''; // root folder
+      const gallery = document.getElementById('gallery');
+
+      fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`)
+        .then(res => res.json())
+        .then(files => {
+          files.forEach(file => {
+            if (file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
+              const imgElement = document.createElement('img');
+              imgElement.src = file.download_url;
+              imgElement.alt = "Epoxy table";
+              gallery.appendChild(imgElement);
+            }
           });
         })
         .catch(err => console.error("Error loading images:", err));
